@@ -1,0 +1,10 @@
+21:22:31 **** Incremental Build of configuration Debug for project cmwx1zzabz_0xx ****
+make all 
+arm-none-eabi-size  cmwx1zzabz_0xx.elf 
+   text	   data	    bss	    dec	    hex	filename
+  62280	    268	   8076	  70624	  113e0	cmwx1zzabz_0xx.elf
+Finished building: default.size.stdout
+ 
+
+21:22:31 Build Finished. 0 errors, 0 warnings. (took 234ms)
+

@@ -1,0 +1,2 @@
+../Core/Src/Degree90.c:11:6:void Degree90_Init(Degree90*, ADC_HandleTypeDef*, ADC_HandleTypeDef*, TIM_HandleTypeDef*, UART_HandleTypeDef*)	1
+../Core/Src/Degree90.c:18:6:void Degree90_ReadADCAndControlServo(Degree90*)	5

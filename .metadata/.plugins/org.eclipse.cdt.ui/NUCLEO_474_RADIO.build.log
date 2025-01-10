@@ -1,0 +1,46 @@
+15:50:43 **** Incremental Build of configuration Debug for project NUCLEO_474_RADIO ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I/home/sasha/STM32Cube/Repository/STM32Cube_FW_G4_V1.6.1/Drivers/STM32G4xx_HAL_Driver/Inc -I/home/sasha/STM32Cube/Repository/STM32Cube_FW_G4_V1.6.1/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I/home/sasha/STM32Cube/Repository/STM32Cube_FW_G4_V1.6.1/Drivers/CMSIS/Device/ST/STM32G4xx/Include -I/home/sasha/STM32Cube/Repository/STM32Cube_FW_G4_V1.6.1/Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:184:13: error: invalid storage class for function 'MX_SPI2_Init'
+  184 | static void MX_SPI2_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:224:13: error: invalid storage class for function 'MX_USART1_UART_Init'
+  224 | static void MX_USART1_UART_Init(void)
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:272:13: error: invalid storage class for function 'MX_GPIO_Init'
+  272 | static void MX_GPIO_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:333:1: error: expected declaration or statement at end of input
+  333 | }
+      | ^
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:66:13: warning: 'MX_GPIO_Init' used but never defined
+   66 | static void MX_GPIO_Init(void);
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:67:13: warning: 'MX_SPI2_Init' used but never defined
+   67 | static void MX_SPI2_Init(void);
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:68:13: warning: 'MX_USART1_UART_Init' used but never defined
+   68 | static void MX_USART1_UART_Init(void);
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:324:6: warning: 'Error_Handler' defined but not used [-Wunused-function]
+  324 | void Error_Handler(void)
+      |      ^~~~~~~~~~~~~
+../Core/Src/main.c:272:13: warning: 'MX_GPIO_Init' defined but not used [-Wunused-function]
+  272 | static void MX_GPIO_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:224:13: warning: 'MX_USART1_UART_Init' defined but not used [-Wunused-function]
+  224 | static void MX_USART1_UART_Init(void)
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:184:13: warning: 'MX_SPI2_Init' defined but not used [-Wunused-function]
+  184 | static void MX_SPI2_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:137:6: warning: 'SystemClock_Config' defined but not used [-Wunused-function]
+  137 | void SystemClock_Config(void)
+      |      ^~~~~~~~~~~~~~~~~~
+make: *** [Core/Src/subdir.mk:34: Core/Src/main.o] Error 1
+"make -j8 all" terminated with exit code 2. Build might be incomplete.
+
+15:50:43 Build Failed. 5 errors, 8 warnings. (took 343ms)
+

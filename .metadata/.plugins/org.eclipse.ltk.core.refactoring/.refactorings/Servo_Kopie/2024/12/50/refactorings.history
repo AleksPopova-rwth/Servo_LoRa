@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;Servo_Kopie/Core/Degree5.cpp&apos; to &apos;Degree5.c&apos;" description="Rename resource &apos;Degree5.cpp&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Degree5.cpp" name="Degree5.c" stamp="1733693558804" updateReferences="true"/>
+</session>

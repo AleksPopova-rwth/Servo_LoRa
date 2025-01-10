@@ -1,0 +1,3 @@
+2024-12-04 00:09:31,227 [ERROR] ConfigurationRetriever:142 - IOException on connection: Connection reset
+2024-12-04 00:09:33,561 [ERROR] ConfigurationRetriever:142 - IOException on connection: Read timed out
+2024-12-04 00:09:33,612 [ERROR] ConfigurationRetriever:142 - IOException on connection: Connection reset

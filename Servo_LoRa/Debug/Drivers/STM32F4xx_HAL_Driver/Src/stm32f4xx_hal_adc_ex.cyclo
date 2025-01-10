@@ -1,0 +1,15 @@
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c:146:19:HAL_StatusTypeDef HAL_ADCEx_InjectedStart(ADC_HandleTypeDef*)	12
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c:249:19:HAL_StatusTypeDef HAL_ADCEx_InjectedStart_IT(ADC_HandleTypeDef*)	12
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c:360:19:HAL_StatusTypeDef HAL_ADCEx_InjectedStop(ADC_HandleTypeDef*)	6
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c:414:19:HAL_StatusTypeDef HAL_ADCEx_InjectedPollForConversion(ADC_HandleTypeDef*, uint32_t)	15
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c:485:19:HAL_StatusTypeDef HAL_ADCEx_InjectedStop_IT(ADC_HandleTypeDef*)	6
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c:547:10:uint32_t HAL_ADCEx_InjectedGetValue(ADC_HandleTypeDef*, uint32_t)	5
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c:598:19:HAL_StatusTypeDef HAL_ADCEx_MultiModeStart_DMA(ADC_HandleTypeDef*, uint32_t*, uint32_t)	9
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c:725:19:HAL_StatusTypeDef HAL_ADCEx_MultiModeStop_DMA(ADC_HandleTypeDef*)	3
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c:778:10:uint32_t HAL_ADCEx_MultiModeGetValue(ADC_HandleTypeDef*)	1
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c:800:13:void HAL_ADCEx_InjectedConvCpltCallback(ADC_HandleTypeDef*)	1
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c:817:19:HAL_StatusTypeDef HAL_ADCEx_InjectedConfigChannel(ADC_HandleTypeDef*, ADC_InjectionConfTypeDef*)	15
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c:981:19:HAL_StatusTypeDef HAL_ADCEx_MultiModeConfigChannel(ADC_HandleTypeDef*, ADC_MultiModeTypeDef*)	2
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c:1028:13:void ADC_MultiModeDMAConvCplt(DMA_HandleTypeDef*)	8
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c:1081:13:void ADC_MultiModeDMAHalfConvCplt(DMA_HandleTypeDef*)	1
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c:1094:13:void ADC_MultiModeDMAError(DMA_HandleTypeDef*)	1

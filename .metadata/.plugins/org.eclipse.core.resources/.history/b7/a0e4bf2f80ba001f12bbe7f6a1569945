@@ -1,0 +1,44 @@
+#include "sx1280receiver.h"
+#include "stdio.h"
+#include "string.h"
+
+// Function to initialize the receiver
+void SX1280Receiver_Init(SX1280Receiver_t *receiver, SX1280_t *sx1280) {
+    receiver->sx1280 = sx1280;
+
+    // Configure timeout settings
+    TickTime_t timeout;
+    timeout.Step = RADIO_TICK_SIZE_1000_US; // Set the step size to 1000µs
+    timeout.NbSteps = 1000;                // Number of steps (1000ms)
+
+    // Initialize the receiver with the specified timeout
+    SX1280SetRx(receiver->sx1280, timeout);
+}
+
+// Function to receive data
+void SX1280Receiver_ReceiveData(SX1280Receiver_t *receiver, UART_HandleTypeDef *huart) {
+    uint8_t payload[255];     // Buffer for received data
+    uint16_t size = 0;        // Variable to store the size of received data
+    char message[50];         // Buffer for logging messages
+    const char noDataMsg[] = "No data received.\n";
+
+    // Retrieve the payload and its size
+    uint8_t result = SX1280GetPayload(receiver->sx1280, payload, &size, sizeof(payload));
+
+    if (result == 0) { // Success
+        // Log the number of received bytes
+        sprintf(message, "Received %d bytes: ", size);
+        HAL_UART_Transmit(huart, (uint8_t *)message, strlen(message), HAL_MAX_DELAY);
+
+        // Transmit the received payload as a hex dump
+        for (uint16_t i = 0; i < size; i++) {
+            sprintf(message, "%02X ", payload[i]);
+            HAL_UART_Transmit(huart, (uint8_t *)message, strlen(message), HAL_MAX_DELAY);
+        }
+
+        // Append a newline after the payload
+        HAL_UART_Transmit(huart, (uint8_t *)"\n", 1, HAL_MAX_DELAY);
+    } else { // No data received
+        HAL_UART_Transmit(huart, (uint8_t *)noDataMsg, strlen(noDataMsg), HAL_MAX_DELAY);
+    }
+}

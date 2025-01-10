@@ -1,0 +1,26 @@
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:311:19:HAL_StatusTypeDef HAL_ADC_Init(ADC_HandleTypeDef*)	4
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:405:19:HAL_StatusTypeDef HAL_ADC_DeInit(ADC_HandleTypeDef*)	3
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:662:13:void HAL_ADC_MspInit(ADC_HandleTypeDef*)	1
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:677:13:void HAL_ADC_MspDeInit(ADC_HandleTypeDef*)	1
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:716:19:HAL_StatusTypeDef HAL_ADC_Start(ADC_HandleTypeDef*)	18
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:839:19:HAL_StatusTypeDef HAL_ADC_Stop(ADC_HandleTypeDef*)	3
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:882:19:HAL_StatusTypeDef HAL_ADC_PollForConversion(ADC_HandleTypeDef*, uint32_t)	16
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:971:19:HAL_StatusTypeDef HAL_ADC_PollForEvent(ADC_HandleTypeDef*, uint32_t, uint32_t)	8
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:1037:19:HAL_StatusTypeDef HAL_ADC_Start_IT(ADC_HandleTypeDef*)	18
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:1162:19:HAL_StatusTypeDef HAL_ADC_Stop_IT(ADC_HandleTypeDef*)	3
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:1199:6:void HAL_ADC_IRQHandler(ADC_HandleTypeDef*)	26
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:1364:19:HAL_StatusTypeDef HAL_ADC_Start_DMA(ADC_HandleTypeDef*, uint32_t*, uint32_t)	19
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:1512:19:HAL_StatusTypeDef HAL_ADC_Stop_DMA(ADC_HandleTypeDef*)	5
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:1568:10:uint32_t HAL_ADC_GetValue(ADC_HandleTypeDef*)	1
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:1580:13:void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef*)	1
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:1595:13:void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef*)	1
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:1610:13:void HAL_ADC_LevelOutOfWindowCallback(ADC_HandleTypeDef*)	1
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:1631:13:void HAL_ADC_ErrorCallback(ADC_HandleTypeDef*)	1
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:1669:19:HAL_StatusTypeDef HAL_ADC_ConfigChannel(ADC_HandleTypeDef*, ADC_ChannelConfTypeDef*)	12
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:1792:19:HAL_StatusTypeDef HAL_ADC_AnalogWDGConfig(ADC_HandleTypeDef*, ADC_AnalogWDGConfTypeDef*)	3
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:1874:10:uint32_t HAL_ADC_GetState(ADC_HandleTypeDef*)	1
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:1886:10:uint32_t HAL_ADC_GetError(ADC_HandleTypeDef*)	1
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:1906:13:void ADC_Init(ADC_HandleTypeDef*)	3
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:1994:13:void ADC_DMAConvCplt(DMA_HandleTypeDef*)	9
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:2063:13:void ADC_DMAHalfConvCplt(DMA_HandleTypeDef*)	1
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c:2080:13:void ADC_DMAError(DMA_HandleTypeDef*)	1

@@ -1,0 +1,20 @@
+/opt/st/stm32cubeide_1.17.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.linux64_1.1.0.202410170702/tools/arm-none-eabi/include/c++/12.3.1/arm-none-eabi/thumb/v7e-m+fp/hard/bits/gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	16	static
+/opt/st/stm32cubeide_1.17.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.linux64_1.1.0.202410170702/tools/arm-none-eabi/include/c++/12.3.1/bits/std_function.h:241:5:std::_Function_base::~_Function_base()	16	static
+../Core/Inc/SX128x.hpp:1051:15:virtual void SX128x::HalPreTx()	16	static
+../Core/Inc/SX128x.hpp:1052:15:virtual void SX128x::HalPreRx()	16	static
+../Core/Inc/SX128x.hpp:1053:15:virtual void SX128x::HalPostTx()	16	static
+../Core/Inc/SX128x.hpp:1054:15:virtual void SX128x::HalPostRx()	16	static
+../Core/Inc/SX128x.hpp:1112:18:virtual uint8_t SX128x::GetDioStatus()	16	static
+../Core/Src/SX128x_driver.cpp:235:9:virtual uint8_t SX128x_OBJ::HalGpioRead(SX128x::GpioPinFunction_t)	16	static
+../Core/Src/SX128x_driver.cpp:255:6:virtual void SX128x_OBJ::HalGpioWrite(SX128x::GpioPinFunction_t, uint8_t)	16	static
+../Core/Src/SX128x_driver.cpp:276:6:virtual void SX128x_OBJ::HalSpiTransfer(uint8_t*, const uint8_t*, uint16_t)	32	static
+../Core/Src/SX128x_driver.cpp:286:6:void SX128x_OBJ::HalSpiTransferDelay(uint8_t*, const uint8_t*, uint16_t)	32	static
+/opt/st/stm32cubeide_1.17.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.linux64_1.1.0.202410170702/tools/arm-none-eabi/include/c++/12.3.1/bits/std_function.h:334:11:std::function<void()>::~function()	16	static
+/opt/st/stm32cubeide_1.17.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.linux64_1.1.0.202410170702/tools/arm-none-eabi/include/c++/12.3.1/bits/std_function.h:334:11:std::function<void(SX128x::IrqErrorCode_t)>::~function()	16	static
+/opt/st/stm32cubeide_1.17.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.linux64_1.1.0.202410170702/tools/arm-none-eabi/include/c++/12.3.1/bits/std_function.h:334:11:std::function<void(SX128x::IrqRangingCode_t)>::~function()	16	static
+/opt/st/stm32cubeide_1.17.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.linux64_1.1.0.202410170702/tools/arm-none-eabi/include/c++/12.3.1/bits/std_function.h:334:11:std::function<void(bool)>::~function()	16	static
+../Core/Inc/SX128x.hpp:1056:9:SX128x::<unnamed struct>::~<constructor>()	16	static
+../Core/Inc/SX128x.hpp:1071:10:SX128x::~SX128x()	16	static
+../Core/Inc/SX128x.hpp:1071:10:virtual SX128x::~SX128x()	16	static
+../Core/Inc/SX128x_OBJ.h:12:7:SX128x_OBJ::~SX128x_OBJ()	16	static
+../Core/Inc/SX128x_OBJ.h:12:7:virtual SX128x_OBJ::~SX128x_OBJ()	16	static

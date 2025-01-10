@@ -1,0 +1,459 @@
+#include "stdio.h"
+#include "string.h"
+#include "main.h"
+
+#define DEBUG; //for debug mode
+#define WAIT_COUNTER 1000;
+
+uint8_t txData_const = 0xC0;  // Beispiel: Opcode für GetStatus
+uint8_t rxData_const = 0x00;  // Hier wird die Antwort gespeichert
+char uart_buf[100];
+int uart_buf_len;
+uint8_t busy, nss, reset;
+uint8_t rxStartBufferPointer = 0x00;
+uint8_t payloadLength = 8;
+extern UART_HandleTypeDef huart3;
+extern SPI_HandleTypeDef hspi1;
+
+void Erase_Flash(void) {
+	FLASH_EraseInitTypeDef EraseInitStruct;
+	uint32_t SectorError;
+
+	// Unlock the Flash
+	HAL_FLASH_Unlock();
+
+	// Configure the erase operation
+	EraseInitStruct.TypeErase = FLASH_TYPEERASE_SECTORS;
+	EraseInitStruct.VoltageRange = FLASH_VOLTAGE_RANGE_3;
+	EraseInitStruct.Sector = FLASH_SECTOR_0; // Specify sector to erase
+	EraseInitStruct.NbSectors = 1;
+
+	// Erase the sector
+	if (HAL_FLASHEx_Erase(&EraseInitStruct, &SectorError) != HAL_OK) {
+		// Handle error
+	}
+
+	// Lock the Flash
+	HAL_FLASH_Lock();
+}
+
+void ResetChip(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin) {
+	HAL_GPIO_WritePin(GPIOx, GPIO_Pin, GPIO_PIN_SET);
+	HAL_Delay(20);
+	HAL_GPIO_WritePin(GPIOx, GPIO_Pin, GPIO_PIN_RESET);
+	HAL_Delay(100);
+	HAL_GPIO_WritePin(GPIOx, GPIO_Pin, GPIO_PIN_SET);
+	HAL_Delay(20);
+}
+
+void SelectChip(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, GPIO_PinState state) {
+	HAL_GPIO_WritePin(GPIOx, GPIO_Pin, state);
+	HAL_Delay(2); // Falls notwendig
+}
+void SPI_TransmitReceiveWithDebug(SPI_HandleTypeDef* hspi, uint8_t* txData, uint8_t* rxData, uint16_t length, const char* debugMessage) {
+	HAL_SPI_TransmitReceive(hspi, txData, rxData, length, HAL_MAX_DELAY);
+	if (debugMessage) {
+		HAL_UART_Transmit(&huart3, (uint8_t*)debugMessage, strlen(debugMessage), 100);
+	}
+}
+uint8_t ProcessStatusByte(uint8_t* statusByte) {
+	// Extrahiere die Bits 7:5 (Circuit Mode) und 4:2 (Command Status)
+	uint8_t circuitMode = (*statusByte >> 5) & 0x07; // Maske 0x07 für 3 Bits
+	uint8_t commandStatus = (*statusByte >> 2) & 0x07; // Maske 0x07 für 3 Bits
+
+	// Debug-Ausgabe für UART
+	char uart_buf[50];
+	int uart_buf_len = sprintf(uart_buf, "Circuit Mode: %u, Command Status: %u\r\n", circuitMode, commandStatus);
+	HAL_UART_Transmit(&huart3, (uint8_t *)uart_buf, uart_buf_len, 100);
+
+	// Verarbeitung von Circuit Mode
+	switch (circuitMode) {
+	case 0x2:
+		// STDBY_RC
+		HAL_UART_Transmit(&huart3, (uint8_t *)"Mode: STDBY_RC\r\n", 17, 100);
+		break;
+	case 0x3:
+		// STDBY_XOSC
+		HAL_UART_Transmit(&huart3, (uint8_t *)"Mode: STDBY_XOSC\r\n", 19, 100);
+		break;
+	case 0x4:
+		// FS
+		HAL_UART_Transmit(&huart3, (uint8_t *)"Mode: FS\r\n", 10, 100);
+		break;
+	case 0x5:
+		// Rx
+		HAL_UART_Transmit(&huart3, (uint8_t *)"Mode: Rx\r\n", 10, 100);
+		break;
+	case 0x6:
+		// Tx
+		HAL_UART_Transmit(&huart3, (uint8_t *)"Mode: Tx\r\n", 10, 100);
+		break;
+	default:
+		HAL_UART_Transmit(&huart3, (uint8_t *)"Mode: Unknown\r\n", 16, 100);
+
+
+	}
+
+	// Verarbeitung von Command Status
+	switch (commandStatus) {
+	case 0x1:
+		HAL_UART_Transmit(&huart3, (uint8_t *)"Command Status: Success\r\n", 26, 100);
+		break;
+	case 0x2:
+		HAL_UART_Transmit(&huart3, (uint8_t *)"Command Status: Data Available\r\n", 33, 100);
+		break;
+	case 0x3:
+		HAL_UART_Transmit(&huart3, (uint8_t *)"Command Status: Timeout\r\n", 26, 100);
+		break;
+	case 0x4:
+		HAL_UART_Transmit(&huart3, (uint8_t *)"Command Status: Error\r\n", 24, 100);
+		break;
+	case 0x5:
+		HAL_UART_Transmit(&huart3, (uint8_t *)"Command Status: Failure\r\n", 26, 100);
+		break;
+	case 0x6:
+		HAL_UART_Transmit(&huart3, (uint8_t *)"Command Status: Tx Done\r\n", 26, 100);
+		break;
+	default:
+		HAL_UART_Transmit(&huart3, (uint8_t *)"Command Status: Unknown\r\n", 27, 100);
+	}
+	return circuitMode;
+}
+
+
+
+void SPI_WaitUntilReady(SPI_HandleTypeDef *hspi) {//TODO not good name, rename
+	uint16_t counter = WAIT_COUNTER;
+	while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_SET) {
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET); // Select the chip
+
+		HAL_Delay(5);
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET); // Select the chip
+		HAL_Delay(5);
+		//		if (--counter==0) {
+		//			//TODO: save radiomodulstate to structure
+		//			ResetChip(GPIOC, GPIO_PIN_7);
+		//			//TODO: restore radio modul state from structure
+		//			counter = WAIT_COUNTER;
+		//		}
+
+	}
+
+
+}
+static void SPI1_TRANSCEIVER_Delay(uint8_t* txData, uint8_t* rxData, uint8_t lengh)
+{
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
+	HAL_Delay(10); // Small delay to ensure stability
+
+	SPI_WaitUntilReady(&hspi1);
+	HAL_SPI_TransmitReceive(&hspi1, txData, rxData, lengh, HAL_MAX_DELAY);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
+
+}
+//void SPI_WaitPause(SPI_HandleTypeDef *hspi) {
+//	while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_RESET) {
+//		busy=uint8_t(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9));
+//		HAL_SPI_Receive(&hspi1, &rxData_const, 1, HAL_MAX_DELAY);   // Lese die Antwort
+//		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET); // Select the chip
+//		nss = uint8_t(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6));
+//
+//	}
+//	busy=uint8_t(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9));
+//	HAL_Delay(10); // Small delay to ensure stability
+//}
+
+
+void SPI_WaitOpcod(SPI_HandleTypeDef *hspi) {
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET); // Select the chip
+	while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_SET) {
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET); // Select the chip
+
+		HAL_Delay(5);
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET); // Select the chip
+		HAL_Delay(5); // Small delay to ensure stability
+
+
+		//SPI1_TRANSCEIVER_Delay(&tx, &rx, 1);
+	}
+
+}
+
+void SPI_WaitTransmit(SPI_HandleTypeDef *hspi) {
+	uint16_t counter = WAIT_COUNTER;
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET); // Select the chip TODO names rename, vvesti counter
+
+
+	while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) != GPIO_PIN_SET) {
+		//		if (--counter==0) {
+		//			ResetChip(GPIOC, GPIO_PIN_7);
+		//			counter = WAIT_COUNTER;
+		//		}
+
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET); // Select the chip
+
+
+
+		HAL_Delay(5); // Small delay to ensure stability
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET); // Select the chip
+
+	}
+	HAL_Delay(5); // Small delay to ensure stability
+
+}
+void GetStatus() {
+	uint8_t command = 0xC0;  // Nur Low Byte wird verwendet
+	uint8_t response = 0;
+
+	// Sende 16-Bit-Datenrahmen (High Byte wird ignoriert)
+	HAL_SPI_TransmitReceive(&hspi1, &command, &response, 1, HAL_MAX_DELAY);
+	ProcessStatusByte(&response);
+	// Extrahiere nur das Low Byte aus der Antwort
+
+}
+
+void SetStandby() {
+	uint8_t command[2] = {0x80, 0x01};
+	HAL_SPI_Transmit(&hspi1, (uint8_t*)command, 2, HAL_MAX_DELAY);
+
+}
+
+// Funktion zum Aktivieren des LoRa Modus
+void setLoRaMode() {
+	uint8_t tx[2] = {0x8A, 0x01}; // LoRa Mode aktivieren
+	HAL_SPI_Transmit(&hspi1, tx, 2, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart3, (uint8_t *)"Set LoRa mode\r\n", 15, HAL_MAX_DELAY);
+	HAL_Delay(5);
+
+}
+void getPacketType(SPI_HandleTypeDef* hspi) {
+	//uint8_t txData;
+	//*(uint32_t*)txData = 0x03 | 0x00 << 16; // LoRa mode
+	uint8_t txData[3] = {0x03, 0x00, 0x00};  // Opcode = 0x03, NOP, NOP
+	uint8_t rxData[3] = {0x00, 0x00, 0x00};
+
+	// SPI-Übertragung und Empfang
+	HAL_SPI_Transmit(&hspi1,txData, 3, HAL_MAX_DELAY);   // Lese die Antwort
+	HAL_SPI_Receive(&hspi1, rxData, 3, HAL_MAX_DELAY);   // Lese die Antwort
+
+	// SPI_TransmitReceiveWithDebug(hspi, txData[0], rxData, 3, "GetPacketType: ");
+	// Der Pakettyp befindet sistatusch im dritten Byte (rxData[2])
+	uint8_t packetType = rxData[2];
+
+	// Debug-Ausgabe
+	switch (packetType) {
+	case 0x00:
+		HAL_UART_Transmit(&huart3, (uint8_t *)"Packet Type: GFSK (0x00)\r\n", 30, 100);
+		break;
+	case 0x01:
+		HAL_UART_Transmit(&huart3, (uint8_t *)"Packet Type: LoRa (0x01)\r\n", 30, 100);
+
+		break;
+	case 0x02:
+		HAL_UART_Transmit(&huart3, (uint8_t *)"Packet Type: Ranging (0x02)\r\n", 30, 100);
+
+		break;
+	case 0x03:
+		HAL_UART_Transmit(&huart3, (uint8_t *)"Packet Type: FLRC (0x03)\r\n", 30, 100);
+
+		break;
+	case 0x04:
+		HAL_UART_Transmit(&huart3, (uint8_t *)"Packet Type: BLE (0x04)\r\n", 30, 100);
+
+		break;
+	default:
+		HAL_UART_Transmit(&huart3, (uint8_t *)"Unknown Packet Type:", 20, 100);
+		HAL_UART_Transmit(&huart3, &packetType, 1, 100);
+		HAL_UART_Transmit(&huart3, (uint8_t *)"\r\n", 4, 100);
+
+		break;
+	}
+}
+
+
+// Funktion zum Setzen der Frequenz 0x86, 0xBC, 0x13, 0xC1
+void setFrequency() {
+	uint8_t tx[4] = {0x86, 0xB8, 0x9D, 0x89}; // Frequenzdaten
+	uint8_t rx[4] = {0};
+	SPI_TransmitReceiveWithDebug(&hspi1, tx, rx, 4, "Set Frequency\r\n");  // SPI mit Debugger
+	HAL_Delay(10);
+
+}
+
+// Funktion zum Setzen der Basisadresse des Buffers
+void setBufferBaseAddress() {
+	uint8_t tx[3] = {0x8F, 0x80, 0x00}; // Basisadresse
+	uint8_t rx[3] = {0};
+	SPI_TransmitReceiveWithDebug(&hspi1, tx, rx, 3, "Set Buffer Base Address\r\n");  // SPI mit Debugger
+	HAL_Delay(10);
+
+}
+
+// Funktion zum Setzen der Modulationsparameter
+void setModulationParams() {
+	uint8_t tx[4] = {0x8B, 0x70, 0x26, 0x01}; // Modulationsparameter
+	uint8_t rx[4] = {0};
+	SPI_TransmitReceiveWithDebug(&hspi1, tx, rx, 4, "Set Modulation Params\r\n");  // SPI mit Debugger
+	HAL_Delay(10);
+}
+
+// Funktion zum Setzen der Paketparameter
+void setPacketParams() {
+	uint8_t tx[8] = {0x8C, 0x0C, 0x80, 0x08, 0x20, 0x40, 0x00, 0x00}; // Paketparameter
+	uint8_t rx[8] = {0};
+	SPI_TransmitReceiveWithDebug(&hspi1, tx, rx, 8, "Set Packet Params\r\n");  // SPI mit Debugger
+	HAL_Delay(10);
+}
+
+// Funktion zum Setzen der IRQ-Parameter (DIO1, DIO2, DIO3) 0x8D, 0x40, 0x23, 0x00, 0x01, 0x00, 0x02, 0x40, 0x20
+void setDioIrqParams() {
+	uint8_t tx[9] = {0x8D, 0x40, 0x23, 0x00, 0x01, 0x00, 0x02, 0x40, 0x20};
+	uint8_t rx[9] = {0};
+	SPI_TransmitReceiveWithDebug(&hspi1, tx, rx, 9, "Set DIO IRQ Params\r\n");  // SPI mit Debugger
+	HAL_Delay(10);
+}
+
+
+// Funktion zum Setzen der RX-Periode (Empfangsparameter)
+void setRxPeriod() {
+	uint8_t tx[4] = {0x82, 0x01, 0xFF, 0xFF}; // RX Periode
+	uint8_t rx[4] = {0};
+	SPI_TransmitReceiveWithDebug(&hspi1, tx, rx, 4, "Set RX Period\r\n");  // SPI mit Debugger
+	HAL_Delay(10);
+}
+
+void DerTakt()
+{
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);   // NSS auf HIGH
+	HAL_Delay(2);
+	SPI_WaitUntilReady(&hspi1);
+	HAL_Delay(2);
+	SPI_WaitTransmit(&hspi1);
+
+}
+void GetPacketStatus(SPI_HandleTypeDef* hspi, UART_HandleTypeDef* huart) {
+	uint8_t tx[2] = {0x1D, 0x00}; // Kommando: GetPacketStatus
+	uint8_t rx[7] = {0}; // Antwortpuffer
+
+	HAL_SPI_TransmitReceive(hspi, tx, rx, 7, HAL_MAX_DELAY);
+
+	// SNR und RSSI auslesen
+	int8_t snrPkt = (int8_t)rx[2];
+	int8_t rssiPkt = (int8_t)rx[1] / -2;
+
+	char uart_buf[100];
+	int uart_buf_len = sprintf(uart_buf, "Packet Status - SNR: %d dB, RSSI: %d dBm\r\n", snrPkt / 4, rssiPkt);
+	HAL_UART_Transmit(huart, (uint8_t*)uart_buf, uart_buf_len, HAL_MAX_DELAY);
+}
+void GetRxBufferStatus(SPI_HandleTypeDef* hspi, UART_HandleTypeDef* huart, uint8_t* rxStartBufferPointer, uint8_t* payloadLengthRx) {
+	uint8_t tx[2] = {0x17, *rxStartBufferPointer}; // Kommando: GetRxBufferStatus
+	uint8_t rx[4] = {0}; // Antwortpuffer
+
+	HAL_SPI_TransmitReceive(hspi, tx, rx, 4, HAL_MAX_DELAY);
+
+	*rxStartBufferPointer = rx[1];
+	*payloadLengthRx = rx[2];
+
+	char uart_buf[100];
+	int uart_buf_len = sprintf(uart_buf, "Buffer Status - Start: %d, Length: %d\r\n", *rxStartBufferPointer, *payloadLengthRx);
+	HAL_UART_Transmit(huart, (uint8_t*)uart_buf, uart_buf_len, HAL_MAX_DELAY);
+}
+void ReadReceivedData(SPI_HandleTypeDef* hspi, UART_HandleTypeDef* huart, uint8_t startBufferPointer, uint8_t payloadLength) {
+    // Kommando: ReadBuffer mit dynamischer Länge
+	payloadLength=8;
+    uint8_t tx[3 + payloadLength]; // 3 Bytes für Opcode + Offset + NOPs für Payload
+    uint8_t rx[3 + payloadLength]; // Empfangspuffer (Status + Daten)
+
+    // Opcode und Offset setzen
+    tx[0] = 0x1B;                // ReadBuffer Opcode
+    tx[1] = startBufferPointer;  // Startadresse
+    tx[2] = 0x00;                // NOP
+    memset(&tx[3], 0x00, payloadLength); // Rest mit NOPs auffüllen
+
+    // SPI-Übertragung
+    HAL_SPI_TransmitReceive(hspi, tx, rx, 3 + payloadLength, HAL_MAX_DELAY);
+
+    // Debug-Ausgabe der empfangenen Daten
+    char buf[100];
+    int uart_buf_len = sprintf(buf, "Received Data (Offset 0x%02X): ", startBufferPointer);
+    HAL_UART_Transmit(huart, (uint8_t*)buf, uart_buf_len, HAL_MAX_DELAY);
+
+    for (uint8_t i = 0; i < payloadLength; i++) {
+        uart_buf_len = sprintf(buf, "%02X ", rx[3 + i]); // Daten beginnen ab Byte 3
+        HAL_UART_Transmit(huart, (uint8_t*)buf, uart_buf_len, HAL_MAX_DELAY);
+    }
+
+    HAL_UART_Transmit(huart, (uint8_t*)"\r\n", 2, HAL_MAX_DELAY);
+}
+
+void ReadIrqStatus(SPI_HandleTypeDef* hspi, UART_HandleTypeDef* huart) {
+	uint8_t tx[4] = {0x15, 0x00, 0x00, 0x00};  // Beispiel für SPI-Befehl zum Abrufen von IRQ-Status
+	uint8_t rx[4] = {0};
+
+	HAL_SPI_TransmitReceive(hspi, tx, rx, 4, HAL_MAX_DELAY);
+
+	// Überprüfe den Inhalt des Empfangspuffers
+	char uart_buf[100];
+	int uart_buf_len = sprintf(uart_buf, "IRQ Status: ");
+	for (int i = 0; i < 3; i++) {
+		uart_buf_len += sprintf(uart_buf + uart_buf_len, "%02X ", rx[i]);
+	}
+	uart_buf_len += sprintf(uart_buf + uart_buf_len, "\r\n");
+	HAL_UART_Transmit(huart, (uint8_t*)uart_buf, uart_buf_len, HAL_MAX_DELAY);
+}
+void RX_BitRateTest(SPI_HandleTypeDef* hspi, UART_HandleTypeDef* huart) {
+	uint32_t time_temp = HAL_GetTick();
+	uint8_t sum = 0;
+	float bps;
+	uint8_t uart_buf[100];
+	int uart_buf_len;
+	char buf[50];
+
+	uart_buf_len = sprintf((char*)uart_buf, "SX1280 RX Bit Rate Test\r\n");
+	HAL_UART_Transmit(huart, uart_buf, uart_buf_len, HAL_MAX_DELAY);
+
+	while (1) {
+		int i = 0;
+		uint8_t tx[4] = {0x15, 0x00, 0x00, 0x00};
+		uint8_t rx[4] = {0x00, 0x00, 0x00, 0x00};
+		while (rx[3] != 2){
+
+			// Beispiel für SPI-Befehl zum Abrufen von IRQ-Status
+			//DerTakt();
+			HAL_SPI_TransmitReceive(&hspi1, tx, rx, 4, HAL_MAX_DELAY);
+			int uart_buf_len = sprintf(buf, "Interrupt Status [%d ]: %0x , %0x\r\n", i++, rx[2], rx[3]);
+			HAL_UART_Transmit(huart, (uint8_t*)buf, uart_buf_len, HAL_MAX_DELAY);
+			HAL_Delay(100);
+			DerTakt();
+
+
+		}
+		GetPacketStatus(&hspi1, &huart3);
+		DerTakt();
+
+		GetRxBufferStatus(&hspi1, &huart3, &rxStartBufferPointer, &payloadLength);
+		DerTakt();
+
+		ReadReceivedData(&hspi1, &huart3, rxStartBufferPointer, payloadLength);
+		DerTakt();
+
+		sum++;
+		uint32_t elapsed_time = HAL_GetTick() - time_temp;
+		if (elapsed_time >= 1000) {  // Update alle 1 Sekunde
+			bps = (float)(sum * 8 * 1000) / elapsed_time;
+			uart_buf_len = sprintf((char*)uart_buf, "Bit Rate: %15.5f bps, sum: %03d\r\n", bps, sum);
+			HAL_UART_Transmit(huart, uart_buf, uart_buf_len, HAL_MAX_DELAY);
+
+			// Reset
+			time_temp = HAL_GetTick();
+			sum = 0;
+		}
+		// IRQ zurücksetzen
+		tx[0] = 0x97;  // ClrIrqStatus
+		tx[1] = 0xFF;
+		tx[2] = 0xFF;
+		HAL_SPI_TransmitReceive(hspi, tx, rx, 3, HAL_MAX_DELAY);
+		HAL_Delay(500); // Wartezeit für Stabilität
+
+	}
+}

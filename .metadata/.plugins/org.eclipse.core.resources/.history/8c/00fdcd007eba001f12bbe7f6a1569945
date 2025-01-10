@@ -1,0 +1,45 @@
+#include "sx1280receiver.h"
+
+// Function to initialize the receiver
+void SX1280Receiver_Init(SX1280Receiver_t *receiver, SX1280_t *sx1280) {
+
+    receiver->sx1280 = sx1280;
+    TickTime_t timeout;
+    timeout.Step = RADIO_TICK_SIZE_1000_US;  // Corrected constant name  // Set the step size (example value)
+    timeout.NbSteps = 1000;                 // Set the number of steps (1000ms for example)
+
+    // Now pass the timeout to SX1280SetRx
+    SX1280SetRx(receiver->sx1280, timeout);
+
+    // Set radio in RX mode (reception)
+}
+
+// Function to receive data
+void SX1280Receiver_ReceiveData(SX1280Receiver_t *receiver, UART_HandleTypeDef *huart) {
+    uint8_t payload[256];  // Buffer for received data
+    uint16_t size = 0;      // Variable to store the size of received data
+    char mssg[50];    // Call to get the payload and its size
+    char msssg[50];    // Call to get the payload and its size
+    char mssssg[3]="\n";    // Call to get the payload and its size
+    char msssssg[3]="No data received.\n";    // Call to get the payload and its size
+
+    // Correct the tick size constant
+
+    // Use uint16_t for size if necessary
+    uint8_t result = SX1280GetPayload(receiver->sx1280, payload, &size, sizeof(payload));
+
+    if (result == 0) {  // Success
+        // Process the received data (e.g., print or use the data)
+        sprintf(mssg, "Received %d bytes: ", size);
+        HAL_UART_Transmit(&huart, (uint8_t *)mssg, strlen(mssg), HAL_MAX_DELAY);
+        for (int i = 0; i < size; i++) {
+            sprintf(msssg, "%02X ", payload[i]);
+            HAL_UART_Transmit(&huart, (uint8_t *)msssg, strlen(msssg), HAL_MAX_DELAY);
+
+        }
+        HAL_UART_Transmit(&huart, (uint8_t *)mssssg, strlen(mssssg), HAL_MAX_DELAY);
+
+    } else {
+        HAL_UART_Transmit(&huart, (uint8_t *)msssssg, strlen(msssssg), HAL_MAX_DELAY);
+    }
+}

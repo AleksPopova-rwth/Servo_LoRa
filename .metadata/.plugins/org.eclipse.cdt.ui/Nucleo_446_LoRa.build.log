@@ -1,0 +1,77 @@
+20:37:55 **** Incremental Build of configuration Debug for project Nucleo_446_LoRa ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+In file included from ../Core/Inc/SX128x_OBJ.h:2,
+                 from ../Core/Src/main.c:28:
+../Core/Inc/SX128x.hpp:52:1: error: unknown type name 'class'
+   52 | class SX128x {
+      | ^~~~~
+../Core/Inc/SX128x.hpp:52:14: error: expected '=', ',', ';', 'asm' or '__attribute__' before '{' token
+   52 | class SX128x {
+      |              ^
+../Core/Inc/SX128x_OBJ.h:12:1: error: unknown type name 'class'
+   12 | class SX128x_OBJ : public SX128x
+      | ^~~~~
+../Core/Inc/SX128x_OBJ.h:12:18: error: expected '=', ',', ';', 'asm' or '__attribute__' before ':' token
+   12 | class SX128x_OBJ : public SX128x
+      |                  ^
+../Core/Src/main.c: In function 'SPI1_TRANSCEIVER_Delay':
+../Core/Src/main.c:67:27: error: 'SX1280_NSS_GPIO_Port' undeclared (first use in this function)
+   67 |         HAL_GPIO_WritePin(SX1280_NSS_GPIO_Port, SX1280_NSS_Pin, GPIO_PIN_RESET);
+      |                           ^~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:67:27: note: each undeclared identifier is reported only once for each function it appears in
+../Core/Src/main.c:67:49: error: 'SX1280_NSS_Pin' undeclared (first use in this function)
+   67 |         HAL_GPIO_WritePin(SX1280_NSS_GPIO_Port, SX1280_NSS_Pin, GPIO_PIN_RESET);
+      |                                                 ^~~~~~~~~~~~~~
+../Core/Src/main.c:69:34: error: 'hspi1' undeclared (first use in this function); did you mean 'hspi2'?
+   69 |         HAL_SPI_TransmitReceive(&hspi1, tx, rx, lengh, 10);
+      |                                  ^~~~~
+      |                                  hspi2
+../Core/Src/main.c: In function 'SPI1_TRANSCEIVER':
+../Core/Src/main.c:75:27: error: 'SX1280_NSS_GPIO_Port' undeclared (first use in this function)
+   75 |         HAL_GPIO_WritePin(SX1280_NSS_GPIO_Port, SX1280_NSS_Pin, GPIO_PIN_RESET);
+      |                           ^~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:75:49: error: 'SX1280_NSS_Pin' undeclared (first use in this function)
+   75 |         HAL_GPIO_WritePin(SX1280_NSS_GPIO_Port, SX1280_NSS_Pin, GPIO_PIN_RESET);
+      |                                                 ^~~~~~~~~~~~~~
+../Core/Src/main.c:76:34: error: 'hspi1' undeclared (first use in this function); did you mean 'hspi2'?
+   76 |         HAL_SPI_TransmitReceive(&hspi1, tx, rx, lengh, 10);
+      |                                  ^~~~~
+      |                                  hspi2
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:139:14: error: 'sx1280' undeclared (first use in this function)
+  139 |         re = sx1280.Init();
+      |              ^~~~~~
+../Core/Src/main.c:178:65: warning: format '%ld' expects argument of type 'long int', but argument 3 has type 'int' [-Wformat=]
+  178 |                         uart_buf_len = sprintf(uart_buf, "RX: %ld %ld\r\n", *(rx_buffer), *(rx_buffer + 1));
+      |                                                               ~~^           ~~~~~~~~~~~~
+      |                                                                 |           |
+      |                                                                 long int    int
+      |                                                               %d
+../Core/Src/main.c:178:69: warning: format '%ld' expects argument of type 'long int', but argument 4 has type 'int' [-Wformat=]
+  178 |                         uart_buf_len = sprintf(uart_buf, "RX: %ld %ld\r\n", *(rx_buffer), *(rx_buffer + 1));
+      |                                                                   ~~^                     ~~~~~~~~~~~~~~~~
+      |                                                                     |                     |
+      |                                                                     long int              int
+      |                                                                   %d
+../Core/Src/main.c:136:17: warning: unused variable 'rx' [-Wunused-variable]
+  136 |         uint8_t rx[10] = {};
+      |                 ^~
+../Core/Src/main.c:135:17: warning: unused variable 'tx' [-Wunused-variable]
+  135 |         uint8_t tx[10] = {};
+      |                 ^~
+../Core/Src/main.c:124:17: warning: variable 'rx_length' set but not used [-Wunused-but-set-variable]
+  124 |         uint8_t rx_length;
+      |                 ^~~~~~~~~
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:72:13: warning: 'SPI1_TRANSCEIVER' defined but not used [-Wunused-function]
+   72 | static void SPI1_TRANSCEIVER(uint8_t *tx, uint8_t *rx, uint8_t lengh)
+      |             ^~~~~~~~~~~~~~~~
+../Core/Src/main.c:65:13: warning: 'SPI1_TRANSCEIVER_Delay' defined but not used [-Wunused-function]
+   65 | static void SPI1_TRANSCEIVER_Delay(uint8_t *tx, uint8_t *rx, uint8_t lengh)
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+make: *** [Core/Src/subdir.mk:34: Core/Src/main.o] Error 1
+"make -j8 all" terminated with exit code 2. Build might be incomplete.
+
+20:37:55 Build Failed. 12 errors, 7 warnings. (took 334ms)
+

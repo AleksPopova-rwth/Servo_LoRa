@@ -1,0 +1,10 @@
+19:35:00 **** Incremental Build of configuration Debug for project Servo_Kopie ****
+make -j8 all 
+arm-none-eabi-size  Servo_Kopie.elf 
+   text	   data	    bss	    dec	    hex	filename
+  43356	    476	   4172	  48004	   bb84	Servo_Kopie.elf
+Finished building: default.size.stdout
+ 
+
+19:35:00 Build Finished. 0 errors, 0 warnings. (took 249ms)
+

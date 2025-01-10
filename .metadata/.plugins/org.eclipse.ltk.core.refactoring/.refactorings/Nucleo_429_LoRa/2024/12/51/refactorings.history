@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;Nucleo_429_LoRa/Core/Src/sxinitializer.cpp&apos; to &apos;sxinitializer.c&apos;" description="Rename resource &apos;sxinitializer.cpp&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Src/sxinitializer.cpp" name="sxinitializer.c" stamp="1734300096253" updateReferences="true"/>
+</session>

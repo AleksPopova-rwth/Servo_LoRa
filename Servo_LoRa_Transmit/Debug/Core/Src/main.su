@@ -1,0 +1,34 @@
+../Core/Src/main.c:82:6:void Erase_Flash()	32	static
+../Core/Src/main.c:103:6:void ResetChip(GPIO_TypeDef*, uint16_t)	16	static
+../Core/Src/main.c:112:6:void SelectChip(GPIO_TypeDef*, uint16_t, GPIO_PinState)	16	static
+../Core/Src/main.c:116:6:void SPI_TransmitReceiveWithDebug(SPI_HandleTypeDef*, uint8_t*, uint8_t*, uint16_t, const char*)	32	static
+../Core/Src/main.c:135:9:uint8_t ProcessStatusByte(uint8_t*)	80	static
+../Core/Src/main.c:201:6:void SPI_WaitUntilReady(SPI_HandleTypeDef*)	16	static
+../Core/Src/main.c:216:13:void SPI1_TRANSCEIVER_Delay(uint8_t*, uint8_t*, uint8_t)	32	static
+../Core/Src/main.c:241:6:void SPI_WaitOpcod(SPI_HandleTypeDef*)	16	static
+../Core/Src/main.c:261:6:void SPI_WaitTransmit(SPI_HandleTypeDef*)	16	static
+../Core/Src/main.c:280:6:void GetStatus()	24	static
+../Core/Src/main.c:293:6:void SetStandby()	16	static
+../Core/Src/main.c:307:6:void setLoRaMode()	16	static
+../Core/Src/main.c:316:6:void getPacketType(SPI_HandleTypeDef*)	32	static
+../Core/Src/main.c:362:6:void setFrequency()	24	static
+../Core/Src/main.c:371:6:void setBufferBaseAddress()	24	static
+../Core/Src/main.c:379:6:void setModulationParams()	24	static
+../Core/Src/main.c:387:6:void setPacketParams()	32	static
+../Core/Src/main.c:403:6:void setTxParams()	24	static
+../Core/Src/main.c:409:6:void setTx()	24	static
+../Core/Src/main.c:415:6:void ClrIrqStatus()	24	static
+../Core/Src/main.c:425:6:void setDioIrqParams(uint16_t, uint16_t, uint16_t, uint16_t)	40	static
+../Core/Src/main.c:445:6:bool checkIrqStatus(uint16_t)	88	static
+../Core/Src/main.c:464:6:void DerTakt()	8	static
+../Core/Src/main.c:511:6:void WriteBuffer(uint8_t, uint8_t*, uint8_t)	80	dynamic
+../Core/Src/main.c:532:6:void ReadBuffer(SPI_HandleTypeDef*, UART_HandleTypeDef*, uint8_t)	144	static
+../Core/Src/main.c:544:6:void SendPayload(uint8_t, uint8_t*, uint8_t)	16	static
+../Core/Src/main.c:552:6:void setDioIrqParamsForTxDone()	40	static
+../Core/Src/main.c:566:9:uint8_t PutPacket(uint8_t*)	24	static
+../Core/Src/main.c:606:5:int main()	24	static
+../Core/Src/main.c:799:6:void SystemClock_Config()	88	static
+../Core/Src/main.c:847:13:void MX_SPI1_Init()	8	static
+../Core/Src/main.c:885:13:void MX_USART2_UART_Init()	8	static
+../Core/Src/main.c:918:13:void MX_GPIO_Init()	48	static
+../Core/Src/main.c:980:6:void Error_Handler()	4	static,ignoring_inline_asm

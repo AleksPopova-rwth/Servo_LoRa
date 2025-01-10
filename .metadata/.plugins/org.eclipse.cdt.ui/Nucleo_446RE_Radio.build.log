@@ -1,0 +1,10 @@
+01:15:27 **** Incremental Build of configuration Debug for project Nucleo_446RE_Radio ****
+make -j8 all 
+arm-none-eabi-size  Nucleo_446RE_Radio.elf 
+   text	   data	    bss	    dec	    hex	filename
+  13948	    104	   2112	  16164	   3f24	Nucleo_446RE_Radio.elf
+Finished building: default.size.stdout
+ 
+
+01:15:28 Build Finished. 0 errors, 0 warnings. (took 551ms)
+
