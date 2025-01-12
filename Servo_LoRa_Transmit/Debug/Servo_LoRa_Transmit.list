@@ -4868,8 +4868,8 @@ static void MX_GPIO_Init(void)
  8002c08:	687b      	ldr	r3, [r7, #4]
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_SET);
- 8002c0a:	2201      	movs	r2, #1
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_RESET);
+ 8002c0a:	2200      	movs	r2, #0
  8002c0c:	2180      	movs	r1, #128	@ 0x80
  8002c0e:	4829      	ldr	r0, [pc, #164]	@ (8002cb4 <_ZL12MX_GPIO_Initv+0x130>)
  8002c10:	f000 fcb7 	bl	8003582 <HAL_GPIO_WritePin>
@@ -4901,14 +4901,14 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pin = GPIO_PIN_7;
  8002c3a:	2380      	movs	r3, #128	@ 0x80
  8002c3c:	617b      	str	r3, [r7, #20]
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
- 8002c3e:	2301      	movs	r3, #1
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+ 8002c3e:	2311      	movs	r3, #17
  8002c40:	61bb      	str	r3, [r7, #24]
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
- 8002c42:	2302      	movs	r3, #2
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 8002c42:	2300      	movs	r3, #0
  8002c44:	61fb      	str	r3, [r7, #28]
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
- 8002c46:	2303      	movs	r3, #3
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
+ 8002c46:	2301      	movs	r3, #1
  8002c48:	623b      	str	r3, [r7, #32]
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
  8002c4a:	f107 0314 	add.w	r3, r7, #20

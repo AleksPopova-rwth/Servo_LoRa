@@ -9845,3 +9845,38 @@ java.lang.NullPointerException: Cannot invoke "org.eclipse.cdt.managedbuilder.co
 !MESSAGE OK
 !SUBENTRY 1 org.eclipse.core.resources 4 77 2025-01-12 21:38:59.669
 !MESSAGE /home/sasha/STM_Projects/RWTH/Workspace_NEW_Servo/Servo_LoRa_Transmit overlaps the location of another project: 'Servo_LoRa_Transmit'
+
+!ENTRY org.eclipse.core.resources 4 77 2025-01-12 21:51:00.504
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2025-01-12 21:51:00.504
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2025-01-12 21:51:00.504
+!MESSAGE /home/sasha/STM_Projects/RWTH/Workspace_NEW_Servo/Servo_LoRa_Transmit overlaps the location of another project: 'Servo_LoRa_Transmit'
+
+!ENTRY org.eclipse.core.resources 4 77 2025-01-12 21:51:58.509
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2025-01-12 21:51:58.509
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2025-01-12 21:51:58.509
+!MESSAGE /home/sasha/STM_Projects/RWTH/Workspace_NEW_Servo/Servo_LoRa_Transmit overlaps the location of another project: 'Servo_LoRa_Transmit'
+
+!ENTRY org.eclipse.core.resources 4 77 2025-01-12 21:52:58.515
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2025-01-12 21:52:58.515
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2025-01-12 21:52:58.515
+!MESSAGE /home/sasha/STM_Projects/RWTH/Workspace_NEW_Servo/Servo_LoRa_Transmit overlaps the location of another project: 'Servo_LoRa_Transmit'
+
+!ENTRY org.eclipse.core.resources 4 77 2025-01-12 21:53:56.363
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2025-01-12 21:53:56.363
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2025-01-12 21:53:56.363
+!MESSAGE /home/sasha/STM_Projects/RWTH/Workspace_NEW_Servo/Servo_LoRa_Transmit overlaps the location of another project: 'Servo_LoRa_Transmit'
+
+!ENTRY org.eclipse.core.resources 4 77 2025-01-12 21:54:27.145
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2025-01-12 21:54:27.145
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2025-01-12 21:54:27.145
+!MESSAGE /home/sasha/STM_Projects/RWTH/Workspace_NEW_Servo/Servo_LoRa_Transmit overlaps the location of another project: 'Servo_LoRa_Transmit'
