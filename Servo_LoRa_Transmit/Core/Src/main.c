@@ -613,22 +613,13 @@ int main(void)
 
 		} while ((irq_response[3] & 0x01) == 0);   // RxTxTimeout bit
 
-
-//
-//		while (!checkIrqStatus(0x0001)) {
-//			HAL_Delay(10); // Warte kurz
-//		}
 		// IRQ wurde erkannt
 		HAL_UART_Transmit(&huart2, (uint8_t *)"Packet sent successfully.\r\n", 28, HAL_MAX_DELAY);
-
-
-		//			GetStatus();               // Status des Transceivers abrufen
-		//			DerTakt();
 		// Lösche IRQ-Status
 		ClrIrqStatus();
 		DerTakt();
 
-		HAL_Delay(1000); // Wiederhole nach 1 Sekunde
+		HAL_Delay(5000); // Wiederhole nach 1 Sekunde
 		HAL_UART_Transmit(&huart2, (uint8_t*)"\r\n", 2, HAL_MAX_DELAY); // Debug-Ausgabe
 
 

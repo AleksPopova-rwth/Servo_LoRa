@@ -1,0 +1,6 @@
+/opt/st/stm32cubeide_1.17.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.linux64_1.1.0.202410170702/tools/arm-none-eabi/include/c++/12.3.1/bits/std_abs.h:56:3:long int std::abs(long int)	1
+../Core/Src/Degree5.c:15:6:void Degree5_Init(Degree5*, ADC_HandleTypeDef*, TIM_HandleTypeDef*, UART_HandleTypeDef*)	1
+../Core/Src/Degree5.c:22:6:void Degree5_ReadADC(Degree5*, uint32_t*, uint32_t*)	3
+../Core/Src/Degree5.c:47:6:void Degree5_SetServoPosition(Degree5*, uint16_t)	17
+../Core/Src/Degree5.c:94:6:void Degree5_ReadADCAndControlServo(Degree5*)	4
+../Core/Src/Degree5.c:128:6:void Degree5_SetServoAngle(Degree5*, uint8_t)	6

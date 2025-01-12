@@ -24,8 +24,8 @@
 ../Core/Src/main.c:467:6:void setDioIrqParamsForTxDone()	1
 ../Core/Src/main.c:481:9:uint8_t PutPacket(uint8_t*)	1
 ../Core/Src/main.c:499:5:int main()	2
-../Core/Src/main.c:650:6:void SystemClock_Config()	3
-../Core/Src/main.c:698:13:void MX_SPI1_Init()	2
-../Core/Src/main.c:736:13:void MX_USART2_UART_Init()	2
-../Core/Src/main.c:769:13:void MX_GPIO_Init()	1
-../Core/Src/main.c:831:6:void Error_Handler()	1
+../Core/Src/main.c:641:6:void SystemClock_Config()	3
+../Core/Src/main.c:689:13:void MX_SPI1_Init()	2
+../Core/Src/main.c:727:13:void MX_USART2_UART_Init()	2
+../Core/Src/main.c:760:13:void MX_GPIO_Init()	1
+../Core/Src/main.c:822:6:void Error_Handler()	1
