@@ -7,6 +7,8 @@
 		<item key="WizardProjectsImportPage.STORE_CLOSE_CREATED_PROJECTS_ID" value="false"/>
 		<item key="WizardProjectsImportPage.STORE_HIDE_CONFLICTING_PROJECTS_ID" value="false"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="/home/sasha/STM_Projects/RWTH/Workspace_NEW_Servo/LoRa_Transmit_Kopie"/>
+			<item value="/home/sasha/STM_Projects/RWTH/Workspace_NEW_Servo/LoRa_Servo_Transmit_2Kopie"/>
 			<item value="/home/sasha/STM_Projects/RWTH/Workspace_NEW_Servo/Servo_LoRa_Transmit"/>
 			<item value="/home/sasha/STM_Projects/RWTH/Workspace_NEW_Servo/Servo_LoRa"/>
 		</list>
@@ -20,6 +22,7 @@
 		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
 		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
 		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="/home/sasha/STM_Projects/RWTH/Workspace_NEW_Servo/LoRa_Servo_Transmit_2Kopie"/>
 			<item value="/home/sasha/STM_Projects/RWTH/servo_90_degree"/>
 			<item value="/home/sasha/Downloads/SX12XX-LoRa-master"/>
 			<item value="/home/sasha/Downloads/en.i-cube_lrwan/STM32CubeExpansion_LRWAN_V2.1.0/Projects/B-L072Z-LRWAN1/Applications/LoRaWAN/LoRaWAN_End_Node"/>

@@ -4,31 +4,28 @@
 ../Core/Src/main.c:116:6:void SPI_TransmitReceiveWithDebug(SPI_HandleTypeDef*, uint8_t*, uint8_t*, uint16_t, const char*)	2
 ../Core/Src/main.c:135:9:uint8_t ProcessStatusByte(uint8_t*)	12
 ../Core/Src/main.c:201:6:void SPI_WaitUntilReady(SPI_HandleTypeDef*)	2
-../Core/Src/main.c:216:13:void SPI1_TRANSCEIVER_Delay(uint8_t*, uint8_t*, uint8_t)	1
-../Core/Src/main.c:241:6:void SPI_WaitOpcod(SPI_HandleTypeDef*)	2
-../Core/Src/main.c:261:6:void SPI_WaitTransmit(SPI_HandleTypeDef*)	2
-../Core/Src/main.c:280:6:void GetStatus()	1
-../Core/Src/main.c:293:6:void SetStandby()	1
-../Core/Src/main.c:307:6:void setLoRaMode()	1
-../Core/Src/main.c:316:6:void getPacketType(SPI_HandleTypeDef*)	6
-../Core/Src/main.c:362:6:void setFrequency()	1
-../Core/Src/main.c:371:6:void setBufferBaseAddress()	1
-../Core/Src/main.c:379:6:void setModulationParams()	1
-../Core/Src/main.c:387:6:void setPacketParams()	1
-../Core/Src/main.c:403:6:void setTxParams()	1
-../Core/Src/main.c:409:6:void setTx()	1
-../Core/Src/main.c:415:6:void ClrIrqStatus()	1
-../Core/Src/main.c:425:6:void setDioIrqParams(uint16_t, uint16_t, uint16_t, uint16_t)	1
-../Core/Src/main.c:445:6:bool checkIrqStatus(uint16_t)	1
-../Core/Src/main.c:464:6:void DerTakt()	1
-../Core/Src/main.c:511:6:void WriteBuffer(uint8_t, uint8_t*, uint8_t)	2
-../Core/Src/main.c:532:6:void ReadBuffer(SPI_HandleTypeDef*, UART_HandleTypeDef*, uint8_t)	1
-../Core/Src/main.c:544:6:void SendPayload(uint8_t, uint8_t*, uint8_t)	1
-../Core/Src/main.c:552:6:void setDioIrqParamsForTxDone()	1
-../Core/Src/main.c:566:9:uint8_t PutPacket(uint8_t*)	1
-../Core/Src/main.c:606:5:int main()	3
-../Core/Src/main.c:799:6:void SystemClock_Config()	3
-../Core/Src/main.c:847:13:void MX_SPI1_Init()	2
-../Core/Src/main.c:885:13:void MX_USART2_UART_Init()	2
-../Core/Src/main.c:918:13:void MX_GPIO_Init()	1
-../Core/Src/main.c:980:6:void Error_Handler()	1
+../Core/Src/main.c:220:6:void SPI_WaitTransmit(SPI_HandleTypeDef*)	2
+../Core/Src/main.c:239:6:void GetStatus()	1
+../Core/Src/main.c:252:6:void SetStandby()	1
+../Core/Src/main.c:266:6:void setLoRaMode()	1
+../Core/Src/main.c:275:6:void getPacketType(SPI_HandleTypeDef*)	6
+../Core/Src/main.c:321:6:void setFrequency()	1
+../Core/Src/main.c:330:6:void setBufferBaseAddress()	1
+../Core/Src/main.c:338:6:void setModulationParams()	1
+../Core/Src/main.c:346:6:void setPacketParams()	1
+../Core/Src/main.c:354:6:void setTxParams()	1
+../Core/Src/main.c:360:6:void setTx()	1
+../Core/Src/main.c:366:6:void ClrIrqStatus()	1
+../Core/Src/main.c:396:6:bool checkIrqStatus(uint16_t)	1
+../Core/Src/main.c:415:6:void DerTakt()	1
+../Core/Src/main.c:426:6:void WriteBuffer(uint8_t, uint8_t*, uint8_t)	2
+../Core/Src/main.c:447:6:void ReadBuffer(SPI_HandleTypeDef*, UART_HandleTypeDef*, uint8_t)	1
+../Core/Src/main.c:459:6:void SendPayload(uint8_t, uint8_t*, uint8_t)	1
+../Core/Src/main.c:467:6:void setDioIrqParamsForTxDone()	1
+../Core/Src/main.c:481:9:uint8_t PutPacket(uint8_t*)	1
+../Core/Src/main.c:499:5:int main()	2
+../Core/Src/main.c:650:6:void SystemClock_Config()	3
+../Core/Src/main.c:698:13:void MX_SPI1_Init()	2
+../Core/Src/main.c:736:13:void MX_USART2_UART_Init()	2
+../Core/Src/main.c:769:13:void MX_GPIO_Init()	1
+../Core/Src/main.c:831:6:void Error_Handler()	1

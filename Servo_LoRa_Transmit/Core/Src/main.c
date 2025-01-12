@@ -213,50 +213,9 @@ void SPI_WaitUntilReady(SPI_HandleTypeDef *hspi) {
 
 
 }
-static void SPI1_TRANSCEIVER_Delay(uint8_t* txData, uint8_t* rxData, uint8_t lengh)
-{
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
-	nss = uint8_t(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6));
-	HAL_Delay(10); // Small delay to ensure stability
-
-	SPI_WaitUntilReady(&hspi1);
-	HAL_SPI_TransmitReceive(&hspi1, txData, rxData, lengh, HAL_MAX_DELAY);
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
-	nss = uint8_t(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6));
-
-}
-//void SPI_WaitPause(SPI_HandleTypeDef *hspi) {
-//	while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_RESET) {
-//		busy=uint8_t(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9));
-//		HAL_SPI_Receive(&hspi1, &rxData_const, 1, HAL_MAX_DELAY);   // Lese die Antwort
-//		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET); // Select the chip
-//		nss = uint8_t(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6));
-//
-//	}
-//	busy=uint8_t(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9));
-//	HAL_Delay(10); // Small delay to ensure stability
-//}
 
 
-void SPI_WaitOpcod(SPI_HandleTypeDef *hspi) {
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET); // Select the chip
-	nss = uint8_t(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6));
-	while (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_SET) {
-		busy=uint8_t(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9));
-		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET); // Select the chip
-		nss = uint8_t(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6));
 
-		HAL_Delay(5);
-		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET); // Select the chip
-		nss = uint8_t(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6));
-		HAL_Delay(10); // Small delay to ensure stability
-
-
-		//SPI1_TRANSCEIVER_Delay(&tx, &rx, 1);
-	}
-	busy=uint8_t(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9));
-
-}
 
 void SPI_WaitTransmit(SPI_HandleTypeDef *hspi) {
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET); // Select the chip
@@ -391,14 +350,6 @@ void setPacketParams() {
 	HAL_Delay(10);
 }
 
-// Funktion zum Setzen der IRQ-Parameter (DIO1, DIO2, DIO3)
-//void setDioIrqParams() {
-//	uint8_t tx[9] = {0x8E, 0x1F, 0xE0, 0x00, 0x01, 0x00, 0x02, 0x40, 0x20}; // IRQ Masken
-//	uint8_t rx[9] = {0};
-//	SPI_TransmitReceiveWithDebug(&hspi1, tx, rx, 9, "Set DIO IRQ Params\r\n");  // SPI mit Debugger
-//	HAL_Delay(10);
-//}
-
 // Funktion zum Setzen der RX-Periode (Empfangsparameter)
 void setTxParams() {
 	uint8_t tx[3] = {0x8E, 0x1F, 0x04}; // TX Periode
@@ -422,25 +373,25 @@ void ClrIrqStatus() {
 	HAL_Delay(10);
 }
 
-void setDioIrqParams(uint16_t irqMask, uint16_t dioMask, uint16_t dio1Mask, uint16_t dio2Mask) {
-	uint8_t tx[9] = {0};
-
-	// SPI-Befehl: SetDioIrqParams
-	tx[0] = 0x8D;               // Opcode für SetDioIrqParams
-	tx[1] = (irqMask >> 8);     // IRQ-Maske (High-Byte)
-	tx[2] = (irqMask & 0xFF);   // IRQ-Maske (Low-Byte)
-	tx[3] = (dioMask >> 8);     // DIO-Maske (High-Byte)
-	tx[4] = (dioMask & 0xFF);   // DIO-Maske (Low-Byte)
-	tx[5] = (dio1Mask >> 8);    // DIO1-Maske (High-Byte)
-	tx[6] = (dio1Mask & 0xFF);  // DIO1-Maske (Low-Byte)
-	tx[7] = (dio2Mask >> 8);    // DIO2-Maske (High-Byte)
-	tx[8] = (dio2Mask & 0xFF);  // DIO2-Maske (Low-Byte)
-
-	// Sende SPI-Befehl
-	HAL_SPI_Transmit(&hspi1, tx, 9, HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart2, (uint8_t *)"SetDioIrqParams sent.\r\n", 23, HAL_MAX_DELAY);
-	HAL_Delay(10);
-}
+//void setDioIrqParams(uint16_t irqMask, uint16_t dioMask, uint16_t dio1Mask, uint16_t dio2Mask) {
+//	uint8_t tx[9] = {0};
+//
+//	// SPI-Befehl: SetDioIrqParams
+//	tx[0] = 0x8D;               // Opcode für SetDioIrqParams
+//	tx[1] = (irqMask >> 8);     // IRQ-Maske (High-Byte)
+//	tx[2] = (irqMask & 0xFF);   // IRQ-Maske (Low-Byte)
+//	tx[3] = (dioMask >> 8);     // DIO-Maske (High-Byte)
+//	tx[4] = (dioMask & 0xFF);   // DIO-Maske (Low-Byte)
+//	tx[5] = (dio1Mask >> 8);    // DIO1-Maske (High-Byte)
+//	tx[6] = (dio1Mask & 0xFF);  // DIO1-Maske (Low-Byte)
+//	tx[7] = (dio2Mask >> 8);    // DIO2-Maske (High-Byte)
+//	tx[8] = (dio2Mask & 0xFF);  // DIO2-Maske (Low-Byte)
+//
+//	// Sende SPI-Befehl
+//	HAL_SPI_Transmit(&hspi1, tx, 9, HAL_MAX_DELAY);
+//	HAL_UART_Transmit(&huart2, (uint8_t *)"SetDioIrqParams sent.\r\n", 23, HAL_MAX_DELAY);
+//	HAL_Delay(10);
+//}
 
 bool checkIrqStatus(uint16_t irqMask) {
 	uint8_t tx[4] = {0x15, 0x00, 0x00, 0x00}; // Opcode für GetIrqStatus
@@ -466,47 +417,11 @@ void DerTakt()
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);   // NSS auf HIGH
 	nss = uint8_t(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6));
 	HAL_Delay(2);
-	SPI_WaitUntilReady(&hspi1);
+	SPI_WaitUntilReady(&hspi1); // BUSY auf 0
 	HAL_Delay(2);
-	SPI_WaitTransmit(&hspi1);
+	SPI_WaitTransmit(&hspi1); //  NSS auf 0, BUSY auf 1
 
 }
-//
-//void SetTxParams(uint8_t power, uint8_t rampTime) {
-//    uint8_t tx[3] = {0};
-//    uint8_t rx[3] = {0};
-//
-//    // SPI-Befehl: SetTxParams
-//    tx[0] = 0x8E;          // Opcode für SetTxParams
-//    tx[1] = power;         // Sendeleistung (0–22 dBm, je nach Hardware)
-//    tx[2] = rampTime;      // Rampenzeit (z. B. RADIO_RAMP_02_US)
-//
-//    // Sende SPI-Befehl
-//	HAL_SPI_TransmitReceive(&hspi1, tx, rx, 3, HAL_MAX_DELAY);
-//}
-
-//void WriteCommand(uint8_t opcode, uint8_t *buffer, uint16_t size) {
-//    uint8_t merged_buf[size + 1];
-//    merged_buf[0] = opcode;
-//    memcpy(merged_buf + 1, buffer, size);
-//
-//    DerTakt();
-//	HAL_SPI_Transmit(&hspi1, buf_out, sizeof(buf_out), HAL_MAX_DELAY);
-//}
-//
-//void SetTx(TickTime_t timeout) {
-//    uint8_t buf[3];
-//    buf[0] = timeout.PeriodBase;
-//    buf[1] = (uint8_t)((timeout.PeriodBaseCount >> 8) & 0x00FF);
-//    buf[2] = (uint8_t)(timeout.PeriodBaseCount & 0x00FF);
-//
-//    InterruptSetting();
-//
-//    //HalPostRx();
-//    //HalPreTx();
-//    WriteCommand(RADIO_SET_TX, buf, sizeof(buf));
-//    //OperatingMode = MODE_TX;
-//}
 
 void WriteBuffer(uint8_t offset, uint8_t *data, uint8_t length) {
 	uint8_t txBuffer[length + 2];
@@ -566,29 +481,7 @@ void setDioIrqParamsForTxDone() {
 uint8_t PutPacket(uint8_t* in)
 {
 	uint8_t offset = 0x80;
-	//
-	//	// Fehlerbehandlung für NULL-Pointer
-	//	if (in == NULL) {
-	//		return NULL_POINTER; // Eingabepuffer ist NULL
-	//	}
-	//
-	//	// Paket in FIFO einfügen
-	//	for (int i = 0; i < PACKET_SIZE; i++) {
-	//		*(tx_eprt + i) = *(in + i);
-	//	}
-	//
-	//	// FIFO-Pointer zyklisch bewegen
-	//	if (tx_eprt == &tx_fifo[FIFO_SIZE - 1][0]) {
-	//		tx_eprt = tx_fifo[0];  // Zurück zum Anfang des FIFOs
-	//	} else {
-	//		tx_eprt += PACKET_SIZE; // Nächstes Paket im FIFO
-	//	}
-	//
-	//	// FIFO-Länge erhöhen
-	//	tx_length++;
 
-	// Nur das erste Paket senden
-	//SendPayload(offset, tx_fifo[0], PACKET_SIZE);
 	SendPayload(offset, in, PACKET_SIZE);
 
 	// Verzögerung, um sicherzustellen, dass genug Zeit für die Übertragung bleibt
@@ -609,8 +502,6 @@ int main(void)
   /* USER CODE BEGIN 1 */
 	//Erase_Flash();
 
-	//uint8_t data[PACKET_SIZE] = {180};  // Beispiel-Daten
-	int i=0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -666,16 +557,15 @@ int main(void)
 	DerTakt();
 
 
-
-	// PutPacket(data);
+	uint8_t irq_status[4] = {0x15, 0x00, 0x00, 0x00};  // Read IRQ Status command
+	uint8_t irq_response[4];
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	while (1)
 	{
-		uint8_t data_180[PACKET_SIZE] = {180};  // Beispiel-Daten
-		uint8_t data_0[PACKET_SIZE] = {0};  // Beispiel-Daten
+		uint8_t data_180[PACKET_SIZE] = {30};  // Beispiel-Daten
 
 		GetStatus();               // Status des Transceivers abrufen
 		DerTakt();
@@ -710,11 +600,24 @@ int main(void)
 
 		setTx();
 		DerTakt();
+
 		// Warte auf TxDone oder Timeout
 		// Warte auf TxDone IRQ
-		while (!checkIrqStatus(0x0001)) {
-			HAL_Delay(10); // Warte kurz
-		}
+		do {
+		    HAL_SPI_TransmitReceive(&hspi1, irq_status, irq_response, sizeof(irq_status), HAL_MAX_DELAY);
+		    char msg[50];
+		    snprintf(msg, sizeof(msg), "IRQ: %02x\r\n", irq_response[3]); // Format the message
+		    HAL_UART_Transmit(&huart2, (uint8_t *)msg, strlen(msg), HAL_MAX_DELAY); // Send the formatted message
+			DerTakt();
+
+
+		} while ((irq_response[3] & 0x01) == 0);   // RxTxTimeout bit
+
+
+//
+//		while (!checkIrqStatus(0x0001)) {
+//			HAL_Delay(10); // Warte kurz
+//		}
 		// IRQ wurde erkannt
 		HAL_UART_Transmit(&huart2, (uint8_t *)"Packet sent successfully.\r\n", 28, HAL_MAX_DELAY);
 
@@ -728,59 +631,7 @@ int main(void)
 		HAL_Delay(1000); // Wiederhole nach 1 Sekunde
 		HAL_UART_Transmit(&huart2, (uint8_t*)"\r\n", 2, HAL_MAX_DELAY); // Debug-Ausgabe
 
-		GetStatus();               // Status des Transceivers abrufen
-		DerTakt();
 
-		setLoRaMode();             // LoRa-Modus aktivieren
-		DerTakt();
-
-		getPacketType(&hspi1);     // Pakettyp abrufen
-		DerTakt();
-
-		setFrequency();            // Frequenz setzen
-		DerTakt();
-
-		setBufferBaseAddress();    // Basisadresse des Buffers setzen
-		DerTakt();
-
-		setModulationParams();     // Modulationsparameter konfigurieren
-		DerTakt();
-
-		setPacketParams();         // Paketparameter einstellen
-		DerTakt();
-		// Paketparameter setzen
-		setTxParams();
-		DerTakt();
-
-		PutPacket(data_0);
-		DerTakt();
-
-		setDioIrqParamsForTxDone();
-		DerTakt();
-
-		setTx();
-		DerTakt();
-		// Warte auf TxDone oder Timeout
-		// Warte auf TxDone IRQ
-		while (!checkIrqStatus(0x0001)) {
-			HAL_Delay(10); // Warte kurz
-			//DerTakt();
-
-		}
-		// IRQ wurde erkannt
-		HAL_UART_Transmit(&huart2, (uint8_t *)"Packet sent successfully.\r\n", 28, HAL_MAX_DELAY);
-
-
-		//			GetStatus();               // Status des Transceivers abrufen
-		//			DerTakt();
-		// Lösche IRQ-Status
-		ClrIrqStatus();
-		DerTakt();
-
-		HAL_Delay(2000); // Wiederhole nach 1 Sekunde
-		HAL_UART_Transmit(&huart2, (uint8_t*)"\r\n", 2, HAL_MAX_DELAY); // Debug-Ausgabe
-
-		//}
 	}
 
 	//HAL_Delay(500);
@@ -942,7 +793,7 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin : PC7 */
   GPIO_InitStruct.Pin = GPIO_PIN_7;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
