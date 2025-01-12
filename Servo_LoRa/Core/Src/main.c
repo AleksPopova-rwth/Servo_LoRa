@@ -29,6 +29,9 @@
 #define DEBUG //for debug mode
 #define WAIT_COUNTER 1000
 static uint8_t offset = 0; // Statische Variable für den Offset
+//#define LoRa
+#define LightSensor
+
 
 /* USER CODE END Includes */
 
@@ -478,8 +481,6 @@ uint8_t RX_BitRateTest(SPI_HandleTypeDef* hspi, UART_HandleTypeDef* huart) {
 	uint8_t tx[4] = {0x15, 0x00, 0x00, 0x00};
 	uint8_t rx[4] = {0x00, 0x00, 0x00, 0x00};
 
-	//    uint8_t rxStartBufferPointer = 0;
-	//    uint8_t payloadLength = 1;
 	uint8_t data = 0;
 
 	// Debug-Ausgabe
@@ -527,7 +528,6 @@ uint8_t RX_BitRateTest(SPI_HandleTypeDef* hspi, UART_HandleTypeDef* huart) {
 	tx[2] = 0xFF;
 	HAL_SPI_TransmitReceive(hspi, tx, rx, 3, HAL_MAX_DELAY);
 	DerTakt();
-	//offset = (offset + 8) % 256;
 
 	// Empfangene Daten zurückgeben
 	return data;
@@ -579,6 +579,7 @@ int main(void)
 
 	HAL_TIM_Base_Start(&htim1);
 
+#ifdef LoRa
 	// Reset Chip
 	ResetChip(GPIOC, GPIO_PIN_7);
 	HAL_Delay(5);
@@ -609,24 +610,25 @@ int main(void)
 	DerTakt();
 
 
-
+#endif
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	while (1)
 	{
-#ifdef DEBUG
+
+#ifdef LoRa
+
 		GetStatus();
 		DerTakt();
-#endif
+
 		setLoRaMode();
 		DerTakt();
 
-#ifdef DEBUG
+
 		getPacketType(&hspi1);
 		DerTakt();
-#endif
 
 
 		setFrequency();
@@ -650,16 +652,14 @@ int main(void)
 
 		setRxPeriod();          // RX Periode setzen
 		DerTakt();
-
-		//#ifdef DEBUG
-		//		GetStatus();
-		//		DerTakt();
-		//#endif
-		//RX_BitRateTest(&hspi1, &huart2);
 		servo_angle=RX_BitRateTest(&hspi1, &huart2);
 		Degree5_SetServoAngle(&degree5Controller, servo_angle);
 		HAL_Delay(5000); // Wiederhole nach 1 Sekunde
-		//Degree5_ReadADCAndControlServo(&degree5Controller);
+#endif
+#ifdef LightSensor
+
+		Degree5_ReadADCAndControlServo(&degree5Controller);
+#endif
 
     /* USER CODE END WHILE */
 

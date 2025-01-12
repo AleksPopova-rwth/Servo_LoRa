@@ -1,10 +1,10 @@
-22:27:52 **** Incremental Build of configuration Debug for project Servo_LoRa ****
+22:41:09 **** Incremental Build of configuration Debug for project Servo_LoRa ****
 make -j8 all 
 arm-none-eabi-size  Servo_LoRa.elf 
    text	   data	    bss	    dec	    hex	filename
-  44256	    468	   2292	  47016	   b7a8	Servo_LoRa.elf
+  38104	    468	   2284	  40856	   9f98	Servo_LoRa.elf
 Finished building: default.size.stdout
  
 
-22:27:53 Build Finished. 0 errors, 0 warnings. (took 241ms)
+22:41:10 Build Finished. 0 errors, 0 warnings. (took 243ms)
 
