@@ -11,7 +11,7 @@ This repository contains the code and documentation for controlling a servo moto
 ## Components
 
 ### Hardware
-- **2 LoRa Modules** (SX1280)
+- **2 LoRa Modules** (SX1280) - 3.3V
 - **Microcontrollers** (STM32446re)
 - **Servo Motor** - 5 Volt.
 - **Power Supply**
